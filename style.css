@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  background-color: #121212;
+  color: #f4f4f4;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ccc;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+input, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+#movieInfo {
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+body.dark #movieInfo {
+  background-color: #1e1e1e;
+}
+
+#movieInfo img {
+  max-width: 150px;
+  float: left;
+  margin-right: 1rem;
+  border-radius: 8px;
+}
+
+#movieInfo h3 {
+  margin-top: 0;
+}
+
+#watchlist {
+  list-style: none;
+  padding: 0;
+}
+
+#watchlist li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+body.dark #watchlist li {
+  background-color: #2a2a2a;
+}
