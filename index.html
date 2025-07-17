@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎬 Movie Night Companion</title>
+  <title>🎬 Movie Companion</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>🎥 Movie Night Companion</h1>
+    <h1>🎞️ Movie Companion</h1>
     <button id="themeToggle">🌙 Toggle Dark Mode</button>
   </header>
 
-  <main>
-    <div class="search-bar">
-      <input type="text" id="movieInput" placeholder="Search for a movie..." />
-      <button onclick="searchMovie()">🔍 Search</button>
-    </div>
+  <section class="search">
+    <input type="text" id="movieInput" placeholder="Enter a movie name..." />
+    <button onclick="searchMovie()">🔍 Search</button>
+  </section>
 
-    <div id="movieInfo"></div>
+  <section id="movieInfo" class="movie-info"></section>
 
-    <h2>📽️ Your Watchlist</h2>
-    <ul id="watchlist"></ul>
-  </main>
+  <h2>⭐ Watchlist</h2>
+  <ul id="watchlist" class="watchlist"></ul>
+
+  <h2>🔥 Trending Movies</h2>
+  <div id="trendingMovies" class="trending-grid"></div>
 
   <script src="script.js"></script>
 </body>
