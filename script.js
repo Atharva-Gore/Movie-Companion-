@@ -1,4 +1,4 @@
-const apiKey = "c1f5fa42"; // OMDb API Key
+const apiKey = "c1f5fa42"; // Your OMDb API key
 
 const movieInput = document.getElementById("movieInput");
 const movieInfo = document.getElementById("movieInfo");
@@ -6,27 +6,23 @@ const watchlist = document.getElementById("watchlist");
 const themeToggle = document.getElementById("themeToggle");
 const trendingSection = document.getElementById("trendingMovies");
 
-// Toggle dark mode
+// Theme toggle
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
 });
 
-// Apply saved theme on load
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
 }
 
-// Load watchlist
+// Load existing watchlist
 let movies = JSON.parse(localStorage.getItem("watchlist")) || [];
 renderWatchlist();
 
 function searchMovie() {
   const title = movieInput.value.trim();
-  if (!title) {
-    alert("Please enter a movie name.");
-    return;
-  }
+  if (!title) return alert("Please enter a movie name.");
 
   fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`)
     .then(res => res.json())
@@ -84,7 +80,7 @@ function renderWatchlist() {
   });
 }
 
-// Display trending movies
+// Static trending section
 const trendingTitles = ["Pathaan", "RRR", "Jawan", "K.G.F", "Gadar 2"];
 trendingTitles.forEach(title => {
   fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`)
@@ -94,11 +90,9 @@ trendingTitles.forEach(title => {
         const div = document.createElement("div");
         div.className = "trending-card";
         div.innerHTML = `
-          <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank">
-            <img src="${data.Poster}" alt="${data.Title}"/>
-            <p><strong>${data.Title}</strong></p>
-            <p>${data.Year}</p>
-          </a>
+          <img src="${data.Poster}" alt="${data.Title}"/>
+          <p><strong>${data.Title}</strong></p>
+          <p>${data.Year}</p>
         `;
         trendingSection.appendChild(div);
       }
