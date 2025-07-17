@@ -4,6 +4,7 @@ const movieInput = document.getElementById("movieInput");
 const movieInfo = document.getElementById("movieInfo");
 const watchlist = document.getElementById("watchlist");
 const themeToggle = document.getElementById("themeToggle");
+const trendingSection = document.getElementById("trendingMovies");
 
 // Toggle dark mode
 themeToggle.addEventListener("click", () => {
@@ -41,7 +42,10 @@ function searchMovie() {
         <p>🎬 Genre: ${data.Genre}</p>
         <p>⭐ IMDb Rating: ${data.imdbRating}</p>
         <p>📜 Plot: ${data.Plot}</p>
-        <button onclick="addToWatchlist('${data.Title}')">➕ Add to Watchlist</button>
+        <p>📆 Release: ${data.Released}</p>
+        <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank">🔗 View on IMDb</a><br/>
+        <textarea placeholder="📝 Add your notes..." id="note-${data.imdbID}" rows="2"></textarea><br/>
+        <button onclick="addToWatchlist('${data.imdbID}', '${data.Title}')">➕ Add to Watchlist</button>
       `;
     })
     .catch(() => {
@@ -49,9 +53,10 @@ function searchMovie() {
     });
 }
 
-function addToWatchlist(title) {
-  if (!movies.includes(title)) {
-    movies.push(title);
+function addToWatchlist(id, title) {
+  if (!movies.find(m => m.id === id)) {
+    const note = document.getElementById(`note-${id}`).value;
+    movies.push({ id, title, note });
     localStorage.setItem("watchlist", JSON.stringify(movies));
     renderWatchlist();
   } else {
@@ -59,11 +64,43 @@ function addToWatchlist(title) {
   }
 }
 
+function removeFromWatchlist(id) {
+  movies = movies.filter(m => m.id !== id);
+  localStorage.setItem("watchlist", JSON.stringify(movies));
+  renderWatchlist();
+}
+
 function renderWatchlist() {
   watchlist.innerHTML = "";
-  movies.forEach(movie => {
+  movies.forEach(({ id, title, note }) => {
     const li = document.createElement("li");
-    li.textContent = movie;
+    li.innerHTML = `
+      <strong>${title}</strong>
+      <br /><em>${note || "(No notes)"}</em>
+      <br /><a href="https://www.imdb.com/title/${id}" target="_blank">🔗 IMDb</a>
+      <button onclick="removeFromWatchlist('${id}')">❌ Remove</button>
+    `;
     watchlist.appendChild(li);
   });
 }
+
+// Display trending movies
+const trendingTitles = ["Pathaan", "RRR", "Jawan", "K.G.F", "Gadar 2"];
+trendingTitles.forEach(title => {
+  fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.Response !== "False") {
+        const div = document.createElement("div");
+        div.className = "trending-card";
+        div.innerHTML = `
+          <a href="https://www.imdb.com/title/${data.imdbID}" target="_blank">
+            <img src="${data.Poster}" alt="${data.Title}"/>
+            <p><strong>${data.Title}</strong></p>
+            <p>${data.Year}</p>
+          </a>
+        `;
+        trendingSection.appendChild(div);
+      }
+    });
+});
